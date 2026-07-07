@@ -1,0 +1,114 @@
+---
+interface Props {
+  title: string;
+  subtitle: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+const {
+  title,
+  subtitle,
+  ctaLabel = "Book a Free Consultation",
+  ctaHref = "#contact",
+} = Astro.props;
+---
+
+<section class="hero" id="home">
+  <div class="hero-bg" aria-hidden="true">
+    <svg class="network" viewBox="0 0 1200 500" preserveAspectRatio="none">
+      <g stroke="rgba(255,255,255,0.25)" stroke-width="1">
+        <line x1="40" y1="60" x2="180" y2="140" />
+        <line x1="180" y1="140" x2="120" y2="240" />
+        <line x1="180" y1="140" x2="320" y2="100" />
+        <line x1="1000" y1="50" x2="1120" y2="130" />
+        <line x1="1120" y1="130" x2="1060" y2="220" />
+        <line x1="1120" y1="130" x2="980" y2="180" />
+      </g>
+      <g fill="rgba(255,255,255,0.5)">
+        <circle cx="40" cy="60" r="3" />
+        <circle cx="180" cy="140" r="3" />
+        <circle cx="120" cy="240" r="3" />
+        <circle cx="320" cy="100" r="3" />
+        <circle cx="1000" cy="50" r="3" />
+        <circle cx="1120" cy="130" r="3" />
+        <circle cx="1060" cy="220" r="3" />
+        <circle cx="980" cy="180" r="3" />
+      </g>
+    </svg>
+  </div>
+
+  <div class="container hero-content">
+    <h1>{title}</h1>
+    <p class="hero-subtitle">{subtitle}</p>
+    <a href={ctaHref} class="btn btn-primary">
+      <span>{ctaLabel}</span>
+      <span class="btn-icon" aria-hidden="true">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l6 6-6 6"/><path d="M12 4l6 6-6 6"/></svg>
+      </span>
+    </a>
+  </div>
+
+  <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+    <path
+      fill="#ffffff"
+      d="M0,64 C240,120 480,0 720,32 C960,64 1200,120 1440,64 L1440,120 L0,120 Z"
+    ></path>
+  </svg>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    background: var(--gradient-hero);
+    padding: 140px 0 100px;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .network {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 860px;
+  }
+
+  .hero h1 {
+    color: var(--c-white);
+    font-size: clamp(28px, 4.5vw, 46px);
+  }
+
+  .hero-subtitle {
+    color: var(--c-muted);
+    font-size: clamp(15px, 1.6vw, 18px);
+    max-width: 720px;
+    margin: 0 auto 32px;
+  }
+
+  .wave {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    z-index: 1;
+  }
+
+  @media (max-width: 600px) {
+    .hero {
+      padding: 120px 0 70px;
+    }
+  }
+</style>

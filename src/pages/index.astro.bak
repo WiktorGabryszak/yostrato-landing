@@ -1,0 +1,75 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import ServiceBlock from "../components/ServiceBlock.astro";
+import Testimonials from "../components/Testimonials.astro";
+import CallToAction from "../components/CallToAction.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<BaseLayout
+  title="YostratO — Web Design and Digital Marketing in Aylesbury"
+  description="YostratO is a trusted web design and digital marketing agency in Aylesbury, building fast, beautiful websites that genuinely drive sales."
+>
+  <Header />
+
+  <Hero
+    title="Websites and Digital Marketing That Genuinely Support Buckinghamshire Businesses"
+    subtitle="If your website isn't turning visitors into customers, you're losing money to your competitors. YostratO is a trusted web design agency in Aylesbury, building fast, modern websites designed for real business results."
+  />
+
+  <section id="services">
+    <ServiceBlock
+      variant="a"
+      imageSide="right"
+      title="Websites Designed Around Your Business Goals"
+      paragraphs={[
+        "No two businesses are the same, which is why YostratO never takes a one-size-fits-all approach. Before we write a single line of copy, we get to know your market, your audience, and what success looks like for you.",
+        "From UX design, through responsive front-end development, to CRM and payment integrations — we build websites that are fast, secure and easy to manage.",
+        "Ready to see how a new website could transform your business?",
+      ]}
+      ctaLabel="Book a Free Consultation"
+      ctaHref="#contact"
+      image="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&q=80"
+      imageAlt="Designer working on a website layout on a laptop"
+      priority
+    />
+
+    <ServiceBlock
+      variant="b"
+      imageSide="left"
+      title="Local SEO in Aylesbury That Genuinely Boosts Visibility"
+      paragraphs={[
+        "If your customers are searching for services in Aylesbury and the surrounding Buckinghamshire area, local SEO is one of the most cost-effective investments you can make.",
+        "We combine local keyword targeting, citation building and on-site optimisation to help your business stand out in Aylesbury's competitive landscape.",
+        "Want to rank higher in local search results?",
+      ]}
+      ctaLabel="Talk to Our Team"
+      ctaHref="#contact"
+      image="https://images.unsplash.com/photo-1533750349088-cd871a92f312?auto=format&fit=crop&q=80"
+      imageAlt="Team working on strategy with a tablet and laptop"
+    />
+
+    <ServiceBlock
+      variant="a"
+      imageSide="right"
+      title="Web Applications and Marketing Automation"
+      paragraphs={[
+        "Beyond the website itself, we build bespoke web applications and implement marketing automation that saves your team time and boosts conversions.",
+        "Every client receives clear, monthly reports showing exactly what's working — no jargon, no black boxes.",
+        "Let's start growing your business together.",
+      ]}
+      ctaLabel="Get in Touch"
+      ctaHref="#contact"
+      image="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80"
+      imageAlt="Colourful grid of app and social media icons on a screen"
+    />
+  </section>
+
+  <Testimonials />
+
+  <CallToAction phone="01296 793010" email="office@yostrato.com" />
+
+  <Footer />
+</BaseLayout>

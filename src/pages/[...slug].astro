@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import ServiceBlock from '../components/ServiceBlock.astro';
+import Testimonials from '../components/Testimonials.astro';
+import CallToAction from '../components/CallToAction.astro';
+import Footer from '../components/Footer.astro';
+
+export async function getStaticPaths() {
+  const apiUrl = import.meta.env.WORDPRESS_API_URL;
+  const response = await fetch(`${apiUrl}/pages?_embed&per_page=100`);
+  const pages = await response.json();
+
+  if (!Array.isArray(pages)) return [];
+
+  return pages.map((page: any) => ({
+    params: { slug: page.slug === 'home' ? undefined : page.slug },
+    props: { page },
+  }));
+}
+
+const { page: staticPage } = Astro.props;
+let page = staticPage;
+
+if (import.meta.env.DEV) {
+  const apiUrl = import.meta.env.WORDPRESS_API_URL;
+  const slug = Astro.params.slug || 'home';
+  try {
+    const response = await fetch(`${apiUrl}/pages?slug=${slug}&_embed`);
+    const pages = await response.json();
+    if (Array.isArray(pages) && pages.length > 0) {
+      page = pages[0];
+    }
+  } catch (e) {
+    console.error("Failed to fetch fresh page data in dev mode:", e);
+  }
+}
+
+// Get ACF blocks
+const blocks = page.acf?.page_blocks || [];
+
+// Extract blocks easily by layout name
+const heroBlock = blocks.find((b: any) => b.acf_fc_layout === 'hero');
+const serviceBlocks = blocks.filter((b: any) => b.acf_fc_layout === 'service') || [];
+const testimonialsBlock = blocks.find((b: any) => b.acf_fc_layout === 'testimonials');
+const ctaBlock = blocks.find((b: any) => b.acf_fc_layout === 'cta');
+
+const seoData = {
+  description: page.yoast_head_json?.description || page.rank_math_description,
+  og_title: page.yoast_head_json?.og_title || page.rank_math_title,
+  og_description: page.yoast_head_json?.og_description || page.rank_math_description,
+  og_image: page.yoast_head_json?.og_image?.[0]?.url || page._embedded?.['wp:featuredmedia']?.[0]?.source_url
+};
+---
+
+<BaseLayout
+  title={seoData.og_title || page.title.rendered || "YostratO — Web Design and Digital Marketing in Aylesbury"}
+  description={seoData.description || "YostratO is a trusted web design and digital marketing agency in Aylesbury, building fast, beautiful websites that genuinely drive sales."}
+>
+  <Header />
+
+  <main>
+    {heroBlock && (
+      <Hero
+        title={heroBlock.title}
+        subtitle={heroBlock.subtitle}
+        ctaLabel={heroBlock.cta_label}
+        ctaHref={heroBlock.cta_href}
+      />
+    )}
+
+    {serviceBlocks.length > 0 && (
+      <section id="services">
+        {serviceBlocks.map((service: any, index: number) => (
+          <ServiceBlock
+            variant={service.variant}
+            imageSide={service.image_side}
+            title={service.title}
+            paragraphs={service.paragraphs}
+            ctaLabel={service.cta_label}
+            ctaHref={service.cta_href}
+            image={service.image}
+            imageAlt={service.image_alt}
+            priority={index === 0}
+          />
+        ))}
+      </section>
+    )}
+
+    {testimonialsBlock && <Testimonials />}
+
+    {ctaBlock && (
+      <CallToAction 
+        phone={ctaBlock.phone} 
+        email={ctaBlock.email} 
+      />
+    )}
+  </main>
+
+  <Footer />
+</BaseLayout>

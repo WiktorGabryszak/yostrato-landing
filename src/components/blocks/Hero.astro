@@ -1,0 +1,114 @@
+---
+const { data } = Astro.props;
+---
+<section class="hero-block">
+  <div class="hero-glow"></div>
+  <h1 class="hero-title">{data.title}</h1>
+  <p class="hero-subtitle">{data.subtitle}</p>
+  {data.cta_label && (
+    <button class="hero-button">
+      {data.cta_label}
+      <span class="button-arrow">&rarr;</span>
+    </button>
+  )}
+</section>
+
+<style>
+  .hero-block {
+    position: relative;
+    background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
+    color: var(--c-white);
+    border-radius: 24px;
+    padding: 80px 40px;
+    margin: 32px 0;
+    text-align: center;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 95, 62, 0.15) 0%, transparent 60%);
+    pointer-events: none;
+    animation: pulse 8s infinite alternate ease-in-out;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.1) translate(5%, 5%); }
+  }
+
+  .hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+    background: linear-gradient(to right, #ffffff 30%, #ff8e75 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 650px;
+    margin: 0 auto 36px;
+    line-height: 1.6;
+    font-weight: 400;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-button {
+    position: relative;
+    z-index: 2;
+    background: var(--gradient-btn);
+    color: var(--c-white);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 16px;
+    padding: 16px 36px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(248, 73, 47, 0.3);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease, filter 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(248, 73, 47, 0.45);
+    filter: brightness(1.05);
+  }
+
+  .button-arrow {
+    transition: transform 0.2s ease;
+  }
+
+  .hero-button:hover .button-arrow {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 768px) {
+    .hero-block {
+      padding: 60px 24px;
+    }
+    .hero-title {
+      font-size: 2.25rem;
+    }
+    .hero-subtitle {
+      font-size: 1.1rem;
+    }
+  }
+</style>

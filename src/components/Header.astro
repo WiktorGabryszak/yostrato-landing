@@ -1,0 +1,185 @@
+---
+const navItems = [
+  { label: "Home", href: "#home" },
+  { label: "About Us", href: "#about" },
+  { label: "Services", href: "#services" },
+  { label: "Testimonials", href: "#testimonials" },
+  { label: "Contact Us", href: "#contact" },
+];
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="#home" class="logo" aria-label="YostratO home">
+      <img src="/yostrato-website-logo.png" alt="YostratO" class="logo-image" width="350" height="38" />
+    </a>
+
+    <nav class="nav-desktop" aria-label="Main navigation">
+      <ul>
+        {navItems.map((item) => (
+          <li><a href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <a href="tel:01296793010" class="btn btn-ghost phone-btn">
+      Tel: 01296 793010
+    </a>
+
+    <button class="burger" aria-label="Open menu" id="burger-btn">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <nav class="nav-mobile" id="mobile-nav" aria-label="Mobile navigation">
+    <ul>
+      {navItems.map((item) => (
+        <li><a href={item.href}>{item.label}</a></li>
+      ))}
+      <li><a href="tel:01296793010" class="mobile-phone">Tel: 01296 793010</a></li>
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 20px 0;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .logo-image {
+    display: block;
+    width: 150px;
+    height: auto;
+  }
+
+  .nav-desktop ul {
+    list-style: none;
+    display: flex;
+    gap: 28px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-desktop a {
+    color: var(--c-white);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+  }
+
+  .nav-desktop a:hover {
+    opacity: 1;
+  }
+
+  .phone-btn {
+    padding: 10px 22px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .burger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .burger span {
+    width: 24px;
+    height: 2px;
+    background: var(--c-white);
+    border-radius: 2px;
+  }
+
+  .nav-mobile {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .nav-desktop {
+      display: none;
+    }
+
+    .phone-btn {
+      display: none;
+    }
+
+    .burger {
+      display: flex;
+    }
+
+    .site-header.menu-open {
+      background: var(--c-orange-deep);
+    }
+
+    .nav-mobile.open {
+      display: block;
+      background: var(--c-orange-deep);
+      margin-top: 10px;
+      padding: 16px 24px 24px;
+    }
+
+    .nav-mobile ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .nav-mobile a {
+      color: var(--c-white);
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .nav-mobile a.mobile-phone {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 10px 18px;
+      background: var(--c-white);
+      color: var(--c-orange-deep);
+      border-radius: var(--radius-pill);
+    }
+
+    .logo-image {
+      width: 130px;
+    }
+  }
+</style>
+
+<script>
+  const burger = document.getElementById("burger-btn");
+  const mobileNav = document.getElementById("mobile-nav");
+  const header = document.querySelector(".site-header");
+  burger?.addEventListener("click", () => {
+    mobileNav?.classList.toggle("open");
+    header?.classList.toggle("menu-open");
+  });
+</script>

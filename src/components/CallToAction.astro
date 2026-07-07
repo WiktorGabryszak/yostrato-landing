@@ -1,0 +1,73 @@
+---
+interface Props {
+  phone: string;
+  email: string;
+}
+
+const { phone, email } = Astro.props;
+const phoneHref = `tel:${phone.replace(/\s/g, "")}`;
+---
+
+<section class="cta-band" id="contact">
+  <div class="container cta-inner">
+    <h2>Request a call back</h2>
+    <p class="cta-line">
+      <span class="cta-label">tel:</span>
+      <a href={phoneHref}>{phone}</a>
+    </p>
+    <p class="cta-line">
+      <span class="cta-label">e:</span>
+      <a href={`mailto:${email}`}>{email}</a>
+    </p>
+    <a href={`mailto:${email}`} class="btn btn-primary">
+      <span>Contact Us</span>
+      <span class="btn-icon" aria-hidden="true">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l6 6-6 6"/><path d="M12 4l6 6-6 6"/></svg>
+      </span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    padding: 90px 0 80px;
+    text-align: center;
+    background: var(--c-white);
+  }
+
+  .cta-inner h2 {
+    color: var(--c-dark);
+    font-size: clamp(30px, 4.2vw, 44px);
+    margin-bottom: 28px;
+  }
+
+  .cta-line {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: clamp(20px, 2.6vw, 28px);
+    margin-bottom: 8px;
+  }
+
+  .cta-line:last-of-type {
+    margin-bottom: 40px;
+  }
+
+  .cta-label {
+    color: var(--c-orange-deep);
+    font-weight: 700;
+    margin-right: 6px;
+  }
+
+  .cta-line a {
+    color: var(--c-dark);
+  }
+
+  .btn-primary {
+    background: var(--gradient-btn);
+    color: var(--c-white);
+  }
+
+  .btn-icon {
+    background: var(--c-orange-darker);
+  }
+</style>

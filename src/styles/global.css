@@ -1,0 +1,143 @@
+:root {
+  /* Brand colors, extracted from the current yostrato.com design */
+  --c-orange-light: #ff7a52;
+  --c-orange: #ff5f3e;
+  --c-orange-deep: #f8492f;
+  --c-orange-darker: #e8402a;
+  --c-red-hover: #de3b26;
+  --gradient-hero: linear-gradient(120deg, #ff7a52 0%, #ff5a3c 45%, #fa4a35 100%);
+  --gradient-block-a: linear-gradient(135deg, #ff7550 0%, #ff5f3e 100%);
+  --gradient-block-b: linear-gradient(135deg, #fb5a3d 0%, #ef4128 100%);
+  --gradient-btn: linear-gradient(90deg, #ff7a52 0%, #f8492f 100%);
+
+  --c-dark: #1a1a1a;
+  --c-white: #ffffff;
+  --c-muted: rgba(255, 255, 255, 0.85);
+  --c-muted-dark: rgba(0, 0, 0, 0.6);
+
+  --font-heading: "Poppins", "Segoe UI", sans-serif;
+  --font-body: "Poppins", "Segoe UI", sans-serif;
+
+  --container-w: 1200px;
+  --radius-pill: 999px;
+  --radius-md: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--c-dark);
+  background: var(--c-white);
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  margin: 0 0 16px;
+  line-height: 1.2;
+}
+
+p {
+  margin: 0 0 16px;
+  line-height: 1.7;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-w);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--c-white);
+  color: var(--c-dark);
+  padding: 4px 4px 4px 28px;
+  gap: 18px;
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--gradient-btn);
+  color: var(--c-white);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-icon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--c-red-hover);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.btn-primary:hover .btn-icon::after {
+  opacity: 1;
+}
+
+.btn-icon svg {
+  position: relative;
+  z-index: 1;
+  width: 16px;
+  height: 16px;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--c-white);
+  border: 2px solid var(--c-white);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn-ghost:hover {
+  background: var(--c-white);
+  color: var(--c-orange-deep);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+}

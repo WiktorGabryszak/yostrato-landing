@@ -1,0 +1,194 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  seoData?: {
+    description?: string;
+    og_title?: string;
+    og_description?: string;
+    og_image?: string;
+    canonical?: string;
+  };
+}
+
+const { title, seoData } = Astro.props;
+const defaultTitle = "YostratO – Headless High-Performance Landing";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/yostrato-favicon.png" />
+    
+    <!-- Meta Tags generated from RankMath API -->
+    <title>{seoData?.og_title || title || defaultTitle}</title>
+    <meta name="description" content={seoData?.description || "High-performance static headless site built with Astro and WordPress."} />
+    
+    <!-- Open Graph Markups -->
+    <meta property="og:title" content={seoData?.og_title || title || defaultTitle} />
+    <meta property="og:description" content={seoData?.og_description || seoData?.description} />
+    {seoData?.og_image && <meta property="og:image" content={seoData.og_image} />}
+    {seoData?.canonical && <link rel="canonical" href={seoData.canonical} />}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+  </head>
+  <body class="layout-body">
+    <header class="main-header">
+      <div class="header-container">
+        <a href="/" class="header-logo">
+          <img src="/yostrato-website-logo.png" alt="YostratO" width="350" height="38" />
+        </a>
+        <nav class="main-nav">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/blog" class="nav-link">Blog</a>
+        </nav>
+      </div>
+    </header>
+    
+    <main class="main-content">
+      <div class="content-container">
+        <slot />
+      </div>
+    </main>
+
+    <footer class="main-footer">
+      <div class="footer-container">
+        <p>&copy; {new Date().getFullYear()} YostratO Ltd. All rights reserved. Decoupled Astro SSG.</p>
+      </div>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .layout-body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-body);
+    color: var(--c-dark);
+    background: #fafafc;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .main-header {
+    background: var(--c-white);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  }
+
+  .header-container {
+    max-width: var(--container-w);
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .header-logo img {
+    height: 40px;
+    width: auto;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .header-logo:hover img {
+    transform: scale(1.02);
+  }
+
+  .main-nav {
+    display: flex;
+    gap: 24px;
+  }
+
+  .nav-link {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 15px;
+    color: #4a4a4a;
+    transition: color 0.2s ease;
+    position: relative;
+    padding: 4px 0;
+  }
+
+  .nav-link:hover {
+    color: var(--c-orange);
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--c-orange);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+  }
+
+  .nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .main-content {
+    flex-grow: 1;
+    padding: 40px 0;
+  }
+
+  .content-container {
+    max-width: var(--container-w);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .main-footer {
+    background: #111;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 30px 0;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 14px;
+  }
+
+  .footer-container {
+    max-width: var(--container-w);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  @media (max-width: 768px) {
+    .header-container {
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+</style>
