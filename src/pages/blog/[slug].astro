@@ -4,15 +4,32 @@ import Layout from '../../layouts/Layout.astro';
 export async function getStaticPaths() {
   const apiUrl = import.meta.env.WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
   const cb = Date.now();
-  const response = await fetch(`${apiUrl}/posts?_embed&per_page=100&cb=${cb}`);
-  const posts = await response.json();
-
-  if (!Array.isArray(posts)) return [];
-
-  return posts.map((post: any) => ({
-    params: { slug: post.slug },
-    props: { post },
-  }));
+  const url = `${apiUrl}/posts?_embed&per_page=100&cb=${cb}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error(`WordPress API returned status ${response.status} for URL: ${url}`);
+      return [];
+    }
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      const bodyText = await response.text();
+      console.error(`WordPress API returned non-JSON response for URL: ${url}. Response body: ${bodyText.substring(0, 300)}`);
+      return [];
+    }
+    const posts = await response.json();
+    if (!Array.isArray(posts)) {
+      console.error(`WordPress API did not return an array for URL: ${url}. Received:`, posts);
+      return [];
+    }
+    return posts.map((post: any) => ({
+      params: { slug: post.slug },
+      props: { post },
+    }));
+  } catch (e) {
+    console.error(`Failed to fetch posts from WordPress API for URL: ${url}`, e);
+    return [];
+  }
 }
 
 const { post: staticPost } = Astro.props;
@@ -24,9 +41,14 @@ if (import.meta.env.DEV) {
   const cb = Date.now();
   try {
     const response = await fetch(`${apiUrl}/posts?slug=${slug}&_embed&cb=${cb}`);
-    const posts = await response.json();
-    if (Array.isArray(posts) && posts.length > 0) {
-      post = posts[0];
+    if (response.ok) {
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const posts = await response.json();
+        if (Array.isArray(posts) && posts.length > 0) {
+          post = posts[0];
+        }
+      }
     }
   } catch (e) {
     console.error("Failed to fetch fresh post data in dev mode:", e);

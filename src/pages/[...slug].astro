@@ -10,15 +10,32 @@ import Footer from '../components/Footer.astro';
 export async function getStaticPaths() {
   const apiUrl = import.meta.env.WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
   const cb = Date.now();
-  const response = await fetch(`${apiUrl}/pages?_embed&per_page=100&cb=${cb}`);
-  const pages = await response.json();
-
-  if (!Array.isArray(pages)) return [];
-
-  return pages.map((page: any) => ({
-    params: { slug: page.slug === 'home' ? undefined : page.slug },
-    props: { page },
-  }));
+  const url = `${apiUrl}/pages?_embed&per_page=100&cb=${cb}`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error(`WordPress API returned status ${response.status} for URL: ${url}`);
+      return [];
+    }
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      const bodyText = await response.text();
+      console.error(`WordPress API returned non-JSON response for URL: ${url}. Response body: ${bodyText.substring(0, 300)}`);
+      return [];
+    }
+    const pages = await response.json();
+    if (!Array.isArray(pages)) {
+      console.error(`WordPress API did not return an array for URL: ${url}. Received:`, pages);
+      return [];
+    }
+    return pages.map((page: any) => ({
+      params: { slug: page.slug === 'home' ? undefined : page.slug },
+      props: { page },
+    }));
+  } catch (e) {
+    console.error(`Failed to fetch pages from WordPress API for URL: ${url}`, e);
+    return [];
+  }
 }
 
 const { page: staticPage } = Astro.props;
@@ -30,9 +47,14 @@ if (import.meta.env.DEV) {
   const cb = Date.now();
   try {
     const response = await fetch(`${apiUrl}/pages?slug=${slug}&_embed&cb=${cb}`);
-    const pages = await response.json();
-    if (Array.isArray(pages) && pages.length > 0) {
-      page = pages[0];
+    if (response.ok) {
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const pages = await response.json();
+        if (Array.isArray(pages) && pages.length > 0) {
+          page = pages[0];
+        }
+      }
     }
   } catch (e) {
     console.error("Failed to fetch fresh page data in dev mode:", e);

@@ -3,8 +3,24 @@ import Layout from '../../layouts/Layout.astro';
 
 const apiUrl = import.meta.env.WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
 const cb = Date.now();
-const response = await fetch(`${apiUrl}/posts?_embed&per_page=100&cb=${cb}`);
-const posts = await response.json();
+const url = `${apiUrl}/posts?_embed&per_page=100&cb=${cb}`;
+let posts = [];
+try {
+  const response = await fetch(url);
+  if (response.ok) {
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      posts = await response.json();
+    } else {
+      const bodyText = await response.text();
+      console.error(`WordPress API returned non-JSON response for URL: ${url}. Response body: ${bodyText.substring(0, 300)}`);
+    }
+  } else {
+    console.error(`WordPress API returned status ${response.status} for URL: ${url}`);
+  }
+} catch (e) {
+  console.error(`Failed to fetch posts from WordPress API for URL: ${url}`, e);
+}
 ---
 
 <Layout title="Blog - Articles & Insights">
