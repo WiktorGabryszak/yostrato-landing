@@ -1,73 +1,73 @@
 # YostratO — Headless Landing Page (Astro + WordPress)
 
-Projekt nowoczesnego, ultraszybkiego landing page'a dla **YostratO** zbudowany w **Astro** (SSG) i zintegrowany z **WordPress** jako bezgłowym systemem zarządzania treścią (Headless CMS). Strona jest przystosowana do wdrożenia na **Cloudflare Pages**.
+A modern, ultra-fast landing page for **YostratO** built with **Astro** (SSG) and integrated with **WordPress** as a Headless CMS. Ready for deployment on **Cloudflare Pages**.
 
-## Architektura i integracje
+## Architecture & Integrations
 
-Wszystkie treści witryny są w pełni edytowalne z poziomu panelu administracyjnego WordPress i dostarczane do Astro przez REST API:
-* **Dynamiczne sekcje powtarzalne (Repeater Fields):** Użytkownik w WordPressie może dodać dowolną liczbę sekcji 50-50 (tekst + obrazek), ustalać ich kolejność, układy (obrazek po lewej/prawej), warianty kolorystyczne oraz wybierać obrazy bezpośrednio z biblioteki mediów WordPressa.
-* **Biblioteka mediów WP & Astro Image:** Zdjęcia są wybierane przez natywny uploader mediów WordPressa, a w Astro są automatycznie optymalizowane do formatu WebP (generowanie obrazków responsywnych o ułamkowym rozmiarze pliku).
-* **Automatyczne wdrożenia (Webhooki):** Zapisanie, usunięcie (kosz) lub przywrócenie strony w WordPressie automatycznie wysyła sygnał (webhook) do Cloudflare Pages, inicjując natychmiastowe przebudowanie i aktualizację wersji produkcyjnej strony.
-* **Globalny panel ustawień:** W menu bocznym WordPressa znajduje się zakładka **YostratO Settings**, w której konfiguruje się produkcyjny adres URL strony oraz link do webhooka Cloudflare.
-* **Integracja Rank Math SEO:** Tytuły i dane meta stron są pobierane bezpośrednio z wtyczki Rank Math SEO.
-* **Przekierowania Headless:** Bezpośrednie próby wejścia na tradycyjny frontend WordPressa przez odwiedzających są automatycznie przekierowywane na docelowy adres URL w Astro (z obsługą parametrów podglądu).
+All site content is fully editable from the WordPress admin panel and delivered to Astro via the REST API:
+* **Dynamic Repeater Fields:** Users can add an arbitrary number of 50-50 sections (text + image) in WordPress, set their order, layouts (image on the left/right), visual variants, and select images directly from the WordPress media library.
+* **WP Media Library & Astro Image:** Images are selected via the native WordPress media uploader and automatically optimized to WebP format in Astro (generating responsive images with fractional file sizes).
+* **Automatic Deployments (Webhooks):** Saving, trashing, or restoring a page in WordPress automatically sends a deploy webhook to Cloudflare Pages, triggering an instant rebuild of the production site.
+* **Global Settings Panel:** A dedicated **YostratO Settings** tab in the WordPress sidebar configures the live production site URL and the Cloudflare deploy webhook URL.
+* **Rank Math SEO Integration:** Meta tags and page titles are fetched directly from the Rank Math SEO plugin schema.
+* **Headless Redirects:** Direct visitor traffic to the traditional WordPress frontend is automatically redirected to the Astro website URL (retaining preview parameters).
 
-## Struktura projektu Astro
+## Astro Project Structure
 
 ```
 src/
   layouts/
-    BaseLayout.astro     – bazowy szablon HTML (czcionki, skrypty, meta)
-    Layout.astro         – główny layout (obsługa SEO z Rank Math, logo, czcionki)
+    BaseLayout.astro     – Base HTML template (fonts, scripts, meta tags)
+    Layout.astro         – Main layout (SEO handling via Rank Math, logo, fonts)
   components/
-    Header.astro         – nagłówek z responsywnym menu mobilnym (a11y: zapobieganie CLS)
-    Hero.astro           – sekcja Hero pobierająca tytuł i teksty z WordPressa
-    ServiceBlock.astro   – elastyczne sekcje 50-50 z optymalizacją `<Image>`
-    Testimonials.astro   – karuzela opinii klientów z poprawionym ARIA tab-role
-    CallToAction.astro   – sekcja zachęcająca do kontaktu (telefon / email z WP)
-    Footer.astro         – zoptymalizowana stopka z poprawnym kontrastem kolorów
+    Header.astro         – Header navigation with mobile drawer (a11y optimized, CLS protection)
+    Hero.astro           – Hero section fetching copy and CTA links from WordPress
+    ServiceBlock.astro   – Flexible 50-50 blocks with Astro `<Image>` optimization
+    Testimonials.astro   – Client reviews carousel with correct ARIA tab roles
+    CallToAction.astro   – Contact band fetching phone and email from WordPress
+    Footer.astro         – Optimized 4-column footer with compliant color contrast ratios
   pages/
-    [...slug].astro      – dynamiczny router obsługujący podstrony w locie z WP
+    [...slug].astro      – Dynamic router fetching pages on-the-fly from WordPress
     blog/
-      index.astro        – katalog artykułów z WordPressa
-      [slug].astro       – pojedynczy artykuł na blogu
+      index.astro        – Blog post archive page from WordPress
+      [slug].astro       – Single blog post template
   styles/
-    global.css           – design tokens, zmienne CSS i kolory systemowe
+    global.css           – Design tokens, CSS variables, and layout system styles
 ```
 
-## Rozwój lokalny
+## Local Development
 
-### 1. Klonowanie i instalacja
+### 1. Clone & Install
 ```bash
 git clone https://github.com/WiktorGabryszak/yostrato-landing.git
 cd yostrato-landing
 npm install
 ```
 
-### 2. Konfiguracja zmiennych środowiskowych
-Utwórz plik `.env` w katalogu głównym projektu i podaj adres API WordPressa:
+### 2. Configure Environment Variables
+Create a `.env` file in the project root directory and specify the WordPress API endpoint:
 ```env
 WORDPRESS_API_URL=https://wordpress-1252676-6537812.cloudwaysapps.com/wp-json/wp/v2
 ```
 
-### 3. Komendy
+### 3. CLI Commands
 ```bash
-npm run dev       # Uruchamia serwer lokalny pod http://localhost:4321
-npm run build     # Buduje gotowe statyczne pliki do folderu ./dist
-npm run preview   # Pozwala podejrzeć lokalnie zbudowaną wersję produkcyjną
+npm run dev       # Starts local development server at http://localhost:4321
+npm run build     # Builds production static files in the ./dist directory
+npm run preview   # Previews the production build locally
 ```
 
-*Wskazówka:* W trybie deweloperskim (`npm run dev`) zmiany wprowadzone w WordPressie są odzwierciedlane natychmiast po odświeżeniu strony w przeglądarce dzięki dynamicznemu pobieraniu danych w czasie rzeczywistym.
+*Tip:* In development mode (`npm run dev`), content changes in WordPress are reflected instantly upon refreshing your browser due to real-time runtime API fetching.
 
-## Deploy na Cloudflare Pages
+## Deploying to Cloudflare Pages
 
-1. Upewnij się, że kod jest wypchnięty na Twój GitHub.
-2. W panelu Cloudflare Pages utwórz nowy projekt i połącz go ze swoim repozytorium.
-3. Skonfiguruj następujące ustawienia:
+1. Ensure the code is pushed to your GitHub repository.
+2. In the Cloudflare Pages dashboard, create a new project and link it to your repository.
+3. Configure the following build settings:
    * **Framework preset:** `Astro`
    * **Build command:** `npm run build`
    * **Build output directory:** `dist`
-4. W sekcji **Environment variables** dodaj zmienną:
+4. Under **Environment variables**, add the following variable:
    * **Name:** `WORDPRESS_API_URL`
    * **Value:** `https://wordpress-1252676-6537812.cloudwaysapps.com/wp-json/wp/v2`
-5. Zapisz i wdrożyj projekt. Skopiuj wygenerowany adres Webhooka wdrożeń z ustawień Cloudflare i wklej go do panelu **YostratO Settings** w WordPressie, aby włączyć automatyczne aktualizacje na żywo.
+5. Save and deploy the project. Copy the generated deploy webhook URL from Cloudflare settings and paste it into the **YostratO Settings** tab in WordPress to activate instant live updates on save.
