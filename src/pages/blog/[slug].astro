@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
-  const apiUrl = import.meta.env.WORDPRESS_API_URL;
+  const apiUrl = import.meta.env.WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
   const response = await fetch(`${apiUrl}/posts?_embed&per_page=100`);
   const posts = await response.json();
 
@@ -18,7 +18,7 @@ const { post: staticPost } = Astro.props;
 let post = staticPost;
 
 if (import.meta.env.DEV) {
-  const apiUrl = import.meta.env.WORDPRESS_API_URL;
+  const apiUrl = import.meta.env.WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
   const { slug } = Astro.params;
   try {
     const response = await fetch(`${apiUrl}/posts?slug=${slug}&_embed`);
@@ -43,7 +43,7 @@ const seoData = {
 <Layout seoData={seoData} title={post.title.rendered}>
   <article class="single-post">
     <header class="post-header">
-      <span class="post-date">{new Date(post.date).toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+      <span class="post-date">{new Date(post.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
       <h1 class="post-title" set:html={post.title.rendered} />
     </header>
     

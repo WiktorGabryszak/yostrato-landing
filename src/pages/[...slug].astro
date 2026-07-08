@@ -8,7 +8,7 @@ import CallToAction from '../components/CallToAction.astro';
 import Footer from '../components/Footer.astro';
 
 export async function getStaticPaths() {
-  const apiUrl = import.meta.env.WORDPRESS_API_URL;
+  const apiUrl = import.meta.env.WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
   const response = await fetch(`${apiUrl}/pages?_embed&per_page=100`);
   const pages = await response.json();
 
@@ -24,7 +24,7 @@ const { page: staticPage } = Astro.props;
 let page = staticPage;
 
 if (import.meta.env.DEV) {
-  const apiUrl = import.meta.env.WORDPRESS_API_URL;
+  const apiUrl = import.meta.env.WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
   const slug = Astro.params.slug || 'home';
   try {
     const response = await fetch(`${apiUrl}/pages?slug=${slug}&_embed`);
