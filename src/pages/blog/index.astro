@@ -6,22 +6,22 @@ const response = await fetch(`${apiUrl}/posts?_embed&per_page=100`);
 const posts = await response.json();
 ---
 
-<Layout title="Katalog Artykułów - Blog">
+<Layout title="Blog - Articles & Insights">
   <div class="blog-header">
-    <h1 class="blog-main-title">Artykuły i Wiedza</h1>
-    <p class="blog-subtitle">Zarządzane bezpośrednio z poziomu tradycyjnego panelu WordPress.</p>
+    <h1 class="blog-main-title">Articles & Insights</h1>
+    <p class="blog-subtitle">Our latest thoughts, guides, and business tips managed from WordPress.</p>
   </div>
   
   <div class="blog-grid">
     {Array.isArray(posts) && posts.map((post: any) => (
       <article class="post-card">
         <div class="card-content">
-          <span class="card-date">{new Date(post.date).toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+          <span class="card-date">{new Date(post.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
           <h2 class="card-title" set:html={post.title.rendered} />
           <div class="card-excerpt" set:html={post.excerpt.rendered} />
         </div>
         <a href={`/blog/${post.slug}`} class="card-link">
-          Czytaj artykuł <span class="card-arrow">&rarr;</span>
+          Read Article <span class="card-arrow">&rarr;</span>
         </a>
       </article>
     ))}
