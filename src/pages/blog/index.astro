@@ -2,16 +2,10 @@
 import Layout from '../../layouts/Layout.astro';
 
 const apiUrl = import.meta.env.WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
-const cb = Date.now();
-const url = `${apiUrl}/posts?_embed&per_page=100&cb=${cb}`;
+const url = `${apiUrl}/posts?_embed&per_page=100`;
 let posts = [];
 try {
-  const response = await fetch(url, {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      'Accept': 'application/json, text/plain, */*'
-    }
-  });
+  const response = await fetch(url);
   if (response.ok) {
     const contentType = response.headers.get("content-type");
     if (contentType && contentType.includes("application/json")) {
