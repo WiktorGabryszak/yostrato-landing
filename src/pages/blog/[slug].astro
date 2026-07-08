@@ -43,7 +43,7 @@ const seoData = {
 <Layout seoData={seoData} title={post.title.rendered}>
   <article class="single-post">
     <header class="post-header">
-      <span class="post-date">{new Date(post.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+      <span class="post-date">{new Date(post.date).toLocaleDateString('pl-PL', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
       <h1 class="post-title" set:html={post.title.rendered} />
     </header>
     
