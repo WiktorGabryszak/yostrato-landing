@@ -9,7 +9,8 @@ import Footer from '../components/Footer.astro';
 
 export async function getStaticPaths() {
   const apiUrl = import.meta.env.WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
-  const response = await fetch(`${apiUrl}/pages?_embed&per_page=100`);
+  const cb = Date.now();
+  const response = await fetch(`${apiUrl}/pages?_embed&per_page=100&cb=${cb}`);
   const pages = await response.json();
 
   if (!Array.isArray(pages)) return [];
@@ -26,8 +27,9 @@ let page = staticPage;
 if (import.meta.env.DEV) {
   const apiUrl = import.meta.env.WORDPRESS_API_URL || process.env.WORDPRESS_API_URL;
   const slug = Astro.params.slug || 'home';
+  const cb = Date.now();
   try {
-    const response = await fetch(`${apiUrl}/pages?slug=${slug}&_embed`);
+    const response = await fetch(`${apiUrl}/pages?slug=${slug}&_embed&cb=${cb}`);
     const pages = await response.json();
     if (Array.isArray(pages) && pages.length > 0) {
       page = pages[0];
